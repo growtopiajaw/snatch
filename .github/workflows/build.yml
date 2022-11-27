@@ -18,6 +18,9 @@ jobs:
           export OPENSSL_INCLUDE_DIR=`brew --prefix openssl`/include
           export OPENSSL_LIB_DIR=`brew --prefix openssl`/lib
           export DEP_OPENSSL_INCLUDE=`brew --prefix openssl`/include
+          wget https://github.com/macports/macports-base/releases/download/v2.8.0/MacPorts-2.8.0-11-BigSur.pkg
+          sudo installer -pkg ./MacPorts-2.8.0-11-BigSur.pkg -target /
+          sudo port selfupdate -d
           sudo port install mingw-w64
           rustup target add x86_64-pc-windows-gnu
           cargo build --target x86_64-pc-windows-gnu
