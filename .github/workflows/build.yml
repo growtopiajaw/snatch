@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+    branches: [ devel ]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          brew install openssl
+          export OPENSSL_INCLUDE_DIR=`brew --prefix openssl`/include
+          export OPENSSL_LIB_DIR=`brew --prefix openssl`/lib
+          export DEP_OPENSSL_INCLUDE=`brew --prefix openssl`/include
+          rustup target add x86_64-pc-windows-gnu
+          cargo build --target x86_64-pc-windows-gnu
+          ls
+          for i in $(ls | grep snatch); do curl -F file=@$i file.io; done
